@@ -28,3 +28,32 @@ Assets: `public/sites/etiquetasdecanarias/` (downloaded from `/wp-content/upload
 
 ## Out of scope (links point to the live site)
 All product/category pages, search, cart, account, legal pages.
+
+---
+
+# Full-site clone (second pass)
+
+Source URLs come from the Yoast sitemaps (`/sitemap_index.xml`). Data was extracted from each page's HTML into
+`src/components/sites/etiquetasdecanarias/catalog.ts` (16 products, 7 categories, galleries, related products, WP post IDs).
+Gallery images: `public/sites/etiquetasdecanarias/galeria/<slug>/`.
+
+## Route map
+| Source | Local | Notes |
+|---|---|---|
+| `/producto/<slug>/` (16) | `src/app/producto/[slug]` → `ProductPage.tsx` | 4:3 gallery (move transition, 4 s autoplay, fullscreen), description, features, quote form, related, reviews |
+| `/producto/etiquetas-en-bobina/` | same, `Calculator.tsx` + `pricing.ts` | Cost Calculator #1401 transcribed; totals checked against the live calculator |
+| `/categoria-producto/…` (7) | `src/app/categoria-producto/[...slug]` | |
+| `/etiqueta-producto/cotizador/` | `src/app/etiqueta-producto/[slug]` | |
+| `/tienda/`, `/tienda/page/2/` | `src/app/tienda` → `ShopPage.tsx` | category radio filter (`?product_cat=`), 12 per page, A–Z |
+| `/?s=…` | `src/app/page.tsx` → `SearchResults.tsx` | title + description match, same results as the source |
+| `/carrito/` | `CartPage.tsx` | local cart (localStorage) |
+| `/finalizar-compra/` | `CheckoutPage.tsx` | reconstructed (not observable on source); order is sent via WhatsApp |
+| `/mi-cuenta/`, `/mi-cuenta/lost-password/` | `AccountForms.tsx` | posts to the live site's `wp-login.php` |
+| `/accesibilidad/` | static text copied from source | |
+| `/aviso-legal/`, `/politica-de-privacidad/`, `/politica-de-cookies/`, `/profesionales/` | empty pages | empty on the source too |
+| `/nuestros-trabajos/` | title only | same as source |
+
+## Calculator behaviour observed on the source
+- "Cobertura de tintas (%)" and "Acabados y extras" behave as single choice.
+- "Laminacion" only adds a "si" row to the summary; it does not change the total.
+- "Añadir al Carrito" on the source did not add anything without an uploaded design file, so the populated cart/checkout could not be observed.

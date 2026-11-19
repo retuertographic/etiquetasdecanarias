@@ -8,60 +8,60 @@ export type NavItem = { label: string; href: string; children?: NavItem[] };
 export const NAV: NavItem[] = [
   {
     label: "Etiquetas",
-    href: `${SITE}/categoria-producto/etiquetas/`,
+    href: `/categoria-producto/etiquetas/`,
     children: [
       {
         label: "Etiquetas Colgantes",
-        href: `${SITE}/categoria-producto/etiquetas/etiquetas-colgantes/`,
+        href: `/categoria-producto/etiquetas/etiquetas-colgantes/`,
         children: [
-          { label: "Etiquetas de Ropa", href: `${SITE}/producto/etiquetas-de-ropa/` },
-          { label: "Etiquetas troqueladas", href: `${SITE}/producto/etiquetas-colgantes-troqueladas/` },
+          { label: "Etiquetas de Ropa", href: `/producto/etiquetas-de-ropa/` },
+          { label: "Etiquetas troqueladas", href: `/producto/etiquetas-colgantes-troqueladas/` },
         ],
       },
     ],
   },
-  { label: "Etiquetas en bobinas", href: `${SITE}/producto/etiquetas-en-bobina/` },
+  { label: "Etiquetas en bobinas", href: `/producto/etiquetas-en-bobina/` },
   {
     label: "Imprenta Digital",
-    href: `${SITE}/categoria-producto/imprenta-digital/`,
+    href: `/categoria-producto/imprenta-digital/`,
     children: [
-      { label: "Tarjetas de visita", href: `${SITE}/producto/tarjetas-de-visita/` },
-      { label: "Flyers", href: `${SITE}/producto/flyers/` },
-      { label: "Calendarios", href: `${SITE}/producto/calendarios/` },
+      { label: "Tarjetas de visita", href: `/producto/tarjetas-de-visita/` },
+      { label: "Flyers", href: `/producto/flyers/` },
+      { label: "Calendarios", href: `/producto/calendarios/` },
     ],
   },
   {
     label: "Textil",
-    href: `${SITE}/categoria-producto/textil/`,
+    href: `/categoria-producto/textil/`,
     children: [
-      { label: "DTF", href: `${SITE}/producto/dtf/` },
-      { label: "Serigrafía", href: `${SITE}/producto/serigrafia/` },
+      { label: "DTF", href: `/producto/dtf/` },
+      { label: "Serigrafía", href: `/producto/serigrafia/` },
     ],
   },
   {
     label: "Rotulaciones",
-    href: `${SITE}/categoria-producto/rotulaciones/`,
+    href: `/categoria-producto/rotulaciones/`,
     children: [
-      { label: "Rotulación de vehículos", href: `${SITE}/producto/rotulacion-de-vehiculos/` },
-      { label: "Gran Formato", href: `${SITE}/producto/pegatinas/` },
-      { label: "Vinilos escaparates", href: `${SITE}/producto/vinilos-escaparates/` },
-      { label: "Todo para el Taxi", href: `${SITE}/producto/todo-para-el-taxi/` },
+      { label: "Rotulación de vehículos", href: `/producto/rotulacion-de-vehiculos/` },
+      { label: "Gran Formato", href: `/producto/pegatinas/` },
+      { label: "Vinilos escaparates", href: `/producto/vinilos-escaparates/` },
+      { label: "Todo para el Taxi", href: `/producto/todo-para-el-taxi/` },
     ],
   },
   {
     label: "Impresión UVI",
-    href: `${SITE}/categoria-producto/impresion-uvi/`,
+    href: `/categoria-producto/impresion-uvi/`,
     children: [
-      { label: "Impresión Directa", href: `${SITE}/producto/impresion-directa/` },
-      { label: "Etiquetas Adhesivas UVI", href: `${SITE}/producto/etiquetas-adhesivas/` },
+      { label: "Impresión Directa", href: `/producto/impresion-directa/` },
+      { label: "Etiquetas Adhesivas UVI", href: `/producto/etiquetas-adhesivas/` },
     ],
   },
   {
     label: "Eventos y Ferias",
-    href: `${SITE}/categoria-producto/eventos-y-ferias/`,
+    href: `/categoria-producto/eventos-y-ferias/`,
     children: [
-      { label: "Eventos y Ferias", href: `${SITE}/producto/rollups/` },
-      { label: "Rollups", href: `${SITE}/producto/rollups-2/` },
+      { label: "Eventos y Ferias", href: `/producto/rollups/` },
+      { label: "Rollups", href: `/producto/rollups-2/` },
     ],
   },
 ];
@@ -70,7 +70,7 @@ export type Product = { title: string; href: string; img: string; alt: string };
 
 const p = (title: string, slug: string, img: string, alt = ""): Product => ({
   title,
-  href: `${SITE}/producto/${slug}/`,
+  href: `/producto/${slug}/`,
   img: `${ASSETS}/productos/${img}`,
   alt,
 });

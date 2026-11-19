@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   output: "standalone",
+  // WordPress URLs on the source all end with "/".
+  trailingSlash: true,
 };
 
 export default nextConfig;

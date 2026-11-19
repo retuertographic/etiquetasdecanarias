@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ASSETS, SITE } from "./data";
+import { ASSETS } from "./data";
 import { FaBrandsFacebook, FaBrandsInstagram, FaBrandsWhatsapp } from "./icons";
 
 const LEGAL = [
-  { label: "AVISO LEGAL", href: `${SITE}/aviso-legal` },
-  { label: "POLÍTICA DE PRIVACIDAD", href: `${SITE}/politica-de-privacidad` },
-  { label: "POLÍTICA DE COOKIES", href: `${SITE}/politica-de-cookies` },
-  { label: "ACCESIBILIDAD", href: `${SITE}/accesibilidad` },
+  { label: "AVISO LEGAL", href: "/aviso-legal/" },
+  { label: "POLÍTICA DE PRIVACIDAD", href: "/politica-de-privacidad/" },
+  { label: "POLÍTICA DE COOKIES", href: "/politica-de-cookies/" },
+  { label: "ACCESIBILIDAD", href: "/accesibilidad/" },
 ];
 
 // The source points every social icon at "#".
@@ -41,9 +41,9 @@ export function Footer() {
             {LEGAL.map((l, i) => (
               <span key={l.href}>
                 {i > 0 && " | "}
-                <a href={l.href} className="hover:text-white">
+                <Link href={l.href} className="hover:text-white">
                   {l.label}
-                </a>
+                </Link>
               </span>
             ))}
           </p>

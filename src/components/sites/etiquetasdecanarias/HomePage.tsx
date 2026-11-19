@@ -1,11 +1,10 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { ComponentType, SVGProps } from "react";
 import { Carousel, type CarouselBreakpoint } from "./Carousel";
-import { ALL_PRODUCTS, ASSETS, BEST_SELLERS, CLIENTS, WHATSAPP, type Product } from "./data";
-import { Footer } from "./Footer";
-import { Header } from "./Header";
+import { ALL_PRODUCTS, ASSETS, BEST_SELLERS, CLIENTS, type Product } from "./data";
 import { HeroSlider } from "./HeroSlider";
-import { FaBrandsWhatsapp, FaLightBoxOpen, FaLightMap, FaLightPrint, FaLightShippingFast } from "./icons";
+import { FaLightBoxOpen, FaLightMap, FaLightPrint, FaLightShippingFast } from "./icons";
 
 const PRODUCT_BREAKPOINTS: CarouselBreakpoint[] = [
   { min: 0, items: 2, nav: false, autoplay: true },
@@ -30,13 +29,13 @@ const FEATURES: { Icon: ComponentType<SVGProps<SVGSVGElement>>; title: string; t
 function ProductCard({ product }: { product: Product }) {
   return (
     <article>
-      <a href={product.href} className="block" draggable={false}>
+      <Link href={product.href} className="block" draggable={false}>
         <Image src={product.img} alt={product.alt} width={614} height={621} sizes="(min-width: 1381px) 174px, (min-width: 1025px) 30vw, 45vw" className="h-auto w-full" draggable={false} />
-      </a>
+      </Link>
       <h2 className="mt-2 text-center text-base leading-[1.2] text-[#0c5f78]">
-        <a href={product.href} className="transition-colors hover:text-[#FF6900]" draggable={false}>
+        <Link href={product.href} className="transition-colors hover:text-[#FF6900]" draggable={false}>
           {product.title}
-        </a>
+        </Link>
       </h2>
     </article>
   );
@@ -55,9 +54,8 @@ function ProductSection({ title, color, products, paddingTop }: { title: string;
 
 export function HomePage() {
   return (
-    <div className="min-h-screen bg-white font-[family-name:var(--font-work-sans)] text-base leading-[28px] text-[#4a4a4a]">
-      <Header />
-      <main className="pt-[145px] max-[1024px]:pt-[100px]">
+    <>
+      <div>
         {/* Hero banners */}
         <section className="px-10 py-8 max-[1024px]:px-6 max-[1024px]:py-6">
           <div className="mx-auto max-w-[1260px]">
@@ -143,19 +141,7 @@ export function HomePage() {
             />
           </div>
         </section>
-      </main>
-      <Footer />
-
-      {/* Floating WhatsApp button (Joinchat on the source) */}
-      <a
-        href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hola *Canarias Línea Gráfica*. Necesito más información sobre Canarias Línea Gráfica https://etiquetasdecanarias.es")}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Abrir chat de WhatsApp"
-        className="fixed right-7 bottom-7 z-50 flex h-[60px] w-[60px] items-center justify-center rounded-full bg-[#25d366] text-white shadow-[0_1px_6px_rgba(0,0,0,0.06),0_2px_32px_rgba(0,0,0,0.16)] transition-transform hover:scale-105"
-      >
-        <FaBrandsWhatsapp className="h-[34px] w-[34px]" />
-      </a>
-    </div>
+      </div>
+    </>
   );
 }

@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { useCart } from "./cart-store";
 import { cn } from "@/lib/utils";
-import { ASSETS, NAV, PHONE, SITE, type NavItem } from "./data";
+import { ASSETS, NAV, PHONE, type NavItem } from "./data";
 import {
   FaLightPhone,
   FaLightSearch,
@@ -22,6 +24,38 @@ function Logo({ className }: { className?: string }) {
       <Image src={`${ASSETS}/img/logo.png`} alt="canariaslineagrafica.es" width={1119} height={212} priority className="h-full w-auto" />
     </Link>
   );
+}
+
+
+const SEARCH_INPUT =
+  "h-[45px] w-full rounded-[4px] bg-[#f2f2f2] pr-[44.8px] pl-6 text-base text-[#4a4a4a] shadow-[0_0_0_1px_#e3e7f0] outline-none placeholder:text-[#8a8a8a] focus:shadow-[0_0_0_2px_#49a7d1]";
+
+function SearchInput({ className, defaultValue }: { className: string; defaultValue?: string }) {
+  return <input key={defaultValue} type="text" name="s" placeholder="Buscar..." aria-label="Buscar..." defaultValue={defaultValue} className={className} />;
+}
+
+function SearchInputFromUrl({ className }: { className: string }) {
+  const params = useSearchParams();
+  return <SearchInput className={className} defaultValue={params.get("s") ?? ""} />;
+}
+
+function CartLink() {
+  const items = useCart();
+  const count = items.reduce((n, i) => n + i.quantity, 0);
+  return (
+    <Link href="/carrito/" aria-label={`Carrito (${count})`} className="relative ml-[30px] text-[#4a4a4a] hover:text-[#FF6900]">
+      <FaLightShoppingCart className="h-[22px] w-[24px]" />
+      {count > 0 && (
+        <span className="absolute -top-2 -right-3 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#FF6900] px-1 text-[11px] leading-none text-white">
+          {count}
+        </span>
+      )}
+    </Link>
+  );
+}
+
+function isActive(item: NavItem, pathname: string): boolean {
+  return pathname === item.href || (item.children?.some((c) => isActive(c, pathname)) ?? false);
 }
 
 function SmallChevron({ className }: { className?: string }) {
@@ -57,13 +91,13 @@ function DesktopDropdown({ items, level }: { items: NavItem[]; level: number }) 
     >
       {items.map((item) => (
         <li key={item.label} className="group/nav relative">
-          <a
+          <Link
             href={item.href}
             className="flex items-center justify-between gap-4 px-5 py-[8.64px] text-[14.4px] leading-[21.6px] whitespace-nowrap text-black uppercase hover:bg-[#f2f4f7] hover:text-[#FF6900]"
           >
             {item.label}
             {item.children && <SmallChevron className="h-3.5 w-3.5" />}
-          </a>
+          </Link>
           {item.children && <DesktopDropdown items={item.children} level={level + 1} />}
         </li>
       ))}
@@ -78,13 +112,13 @@ function MobileNavList({ items, depth = 0 }: { items: NavItem[]; depth?: number 
       {items.map((item) => (
         <li key={item.label} className="border-b border-[#e3e7f0] last:border-b-0">
           <div className="flex items-center">
-            <a
+            <Link
               href={item.href}
               className="flex-1 py-3 text-[15px] text-[#404040] uppercase hover:text-[#FF6900]"
               style={{ paddingLeft: 20 + depth * 16 }}
             >
               {item.label}
-            </a>
+            </Link>
             {item.children && (
               <button
                 type="button"
@@ -150,7 +184,14 @@ function PrimerPedidoPopup({ onClose }: { onClose: () => void }) {
 }
 
 export function Header() {
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  // Close the mobile menu whenever the route changes.
+  const [lastPath, setLastPath] = useState(pathname);
+  if (lastPath !== pathname) {
+    setLastPath(pathname);
+    setMenuOpen(false);
+  }
   const [popupOpen, setPopupOpen] = useState(false);
 
   return (
@@ -160,14 +201,10 @@ export function Header() {
         <div className="hidden h-[100px] px-10 shadow-[0_1px_0_rgba(0,0,0,0.08)] min-[1025px]:block">
           <div className="relative mx-auto flex h-full max-w-[1260px] items-center justify-between">
             <Logo className="h-[60px] w-[317px]" />
-            <form role="search" action={`${SITE}/`} method="get" className="absolute top-1/2 left-1/2 w-[390px] -translate-x-1/2 -translate-y-1/2">
-              <input
-                type="text"
-                name="s"
-                placeholder="Buscar..."
-                aria-label="Buscar..."
-                className="h-[45px] w-full rounded-[4px] bg-[#f2f2f2] pr-[44.8px] pl-6 text-base text-[#4a4a4a] shadow-[0_0_0_1px_#e3e7f0] outline-none placeholder:text-[#8a8a8a] focus:shadow-[0_0_0_2px_#49a7d1]"
-              />
+            <form role="search" action="/" method="get" className="absolute top-1/2 left-1/2 w-[390px] -translate-x-1/2 -translate-y-1/2">
+              <Suspense fallback={<SearchInput className={SEARCH_INPUT} />}>
+                <SearchInputFromUrl className={SEARCH_INPUT} />
+              </Suspense>
               <button type="submit" aria-label="Buscar" className="absolute top-0 right-0 flex h-[45px] w-[45px] items-center justify-center text-[#4a4a4a]">
                 <FaLightSearch className="h-[18px] w-[18px]" />
               </button>
@@ -178,12 +215,10 @@ export function Header() {
                 <FaLightPhone className="h-[13px] w-[13px]" />
                 {PHONE}
               </a>
-              <a href={`${SITE}/carrito/`} aria-label="Carrito" className="ml-[30px] text-[#4a4a4a] hover:text-[#FF6900]">
-                <FaLightShoppingCart className="h-[22px] w-[24px]" />
-              </a>
-              <a href={`${SITE}/mi-cuenta`} aria-label="Mi cuenta" className="ml-[27px] text-[#404040] hover:text-[#FF6900]">
+              <CartLink />
+              <Link href="/mi-cuenta/" aria-label="Mi cuenta" className="ml-[27px] text-[#404040] hover:text-[#FF6900]">
                 <FaLightUser className="h-[20px] w-[18px]" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -193,9 +228,15 @@ export function Header() {
           <ul className="mx-auto flex h-full max-w-[1260px] items-center justify-center">
             {NAV.map((item) => (
               <li key={item.label} className="group/nav relative h-full">
-                <a href={item.href} className="block px-5 text-[14px] leading-[45px] text-[#4a4a4a] uppercase transition-colors hover:text-[#FF6900]">
+                <Link
+                  href={item.href}
+                  className={cn(
+                    "block px-5 text-[14px] leading-[45px] uppercase transition-colors hover:text-[#FF6900]",
+                    isActive(item, pathname) ? "text-black" : "text-[#4a4a4a]",
+                  )}
+                >
                   {item.label}
-                </a>
+                </Link>
                 {item.children && <DesktopDropdown items={item.children} level={2} />}
               </li>
             ))}
