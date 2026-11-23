@@ -201,7 +201,7 @@ export function Header() {
         <div className="hidden h-[100px] px-10 shadow-[0_1px_0_rgba(0,0,0,0.08)] min-[1025px]:block">
           <div className="relative mx-auto flex h-full max-w-[1260px] items-center justify-between">
             <Logo className="h-[60px] w-[317px]" />
-            <form role="search" action="/" method="get" className="absolute top-1/2 left-1/2 w-[390px] -translate-x-1/2 -translate-y-1/2">
+            <form role="search" action={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/`} method="get" className="absolute top-1/2 left-1/2 w-[390px] -translate-x-1/2 -translate-y-1/2">
               <Suspense fallback={<SearchInput className={SEARCH_INPUT} />}>
                 <SearchInputFromUrl className={SEARCH_INPUT} />
               </Suspense>
