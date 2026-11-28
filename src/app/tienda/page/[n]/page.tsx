@@ -4,7 +4,10 @@ import { Suspense } from "react";
 import { PRODUCTS, SHOP_PAGE_SIZE } from "@/components/sites/etiquetasdecanarias/catalog";
 import { ShopPage } from "@/components/sites/etiquetasdecanarias/ShopPage";
 
-export const metadata: Metadata = { title: "Catálogo" };
+export async function generateMetadata({ params }: { params: Promise<{ n: string }> }): Promise<Metadata> {
+  const { n } = await params;
+  return { title: `Catálogo - Página ${n}`, alternates: { canonical: `/tienda/page/${n}/` } };
+}
 export const dynamicParams = false;
 
 export function generateStaticParams() {

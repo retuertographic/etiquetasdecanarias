@@ -24,7 +24,7 @@ export function SearchResults({ query }: { query: string }) {
   return (
     <Section>
       <h1 className="mb-[40px] text-center text-[44.8px] leading-[1.2] text-[#0f131f] max-[600px]:text-[28px]">Resultados de la búsqueda de «{query}»</h1>
-      {results.length ? <ProductGrid products={results} /> : <p className="text-center">No se han encontrado resultados.</p>}
+      {results.length ? <ProductGrid products={results} priorityCount={4} /> : <p className="text-center">No se han encontrado resultados.</p>}
     </Section>
   );
 }

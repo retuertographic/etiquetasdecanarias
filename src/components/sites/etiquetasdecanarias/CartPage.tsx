@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { cart, formatEuro, useCart } from "./cart-store";
-import { productHref } from "./catalog";
+import { productHref } from "./paths";
 import { BUTTON, Notice, Section } from "./ui";
 
 export function CartPage() {

@@ -32,7 +32,7 @@ export function Footer() {
               </a>
             ))}
           </div>
-          <Image src={`${ASSETS}/img/subvencion.png`} alt="Programa Kit Digital financiado por los fondos Next Generation del Mecanismo de Recuperación y Resiliencia" width={1024} height={110} className="mt-10 h-auto w-full max-w-[1024px]" />
+          <Image src={`${ASSETS}/img/subvencion.png`} alt="Programa Kit Digital financiado por los fondos Next Generation del Mecanismo de Recuperación y Resiliencia" width={1024} height={110} sizes="(min-width: 1104px) 1024px, 100vw" className="mt-10 h-auto w-full max-w-[1024px]" />
         </div>
       </section>
       <section className="bg-[#8496a3] px-10 py-8 text-[#e3e7f0] max-[600px]:px-4 max-[600px]:pb-24">

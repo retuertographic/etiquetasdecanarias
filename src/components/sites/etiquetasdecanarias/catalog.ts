@@ -1171,13 +1171,7 @@ export const SHOP_PAGE_SIZE = 12;
 export const PRODUCT_BY_SLUG = new Map(PRODUCTS.map((p) => [p.slug, p]));
 export const CATEGORY_BY_SLUG = new Map(CATEGORIES.map((c) => [c.slug, c]));
 
-export function productHref(slug: string) {
-  return `/producto/${slug}/`;
-}
-
-export function categoryHref(slug: string) {
-  return `/categoria-producto/${slug}/`;
-}
+export { categoryHref, productHref } from "./paths";
 
 /** Products sorted by title (the WooCommerce shop default on the source). */
 export function productsByTitle(list: CatalogProduct[] = PRODUCTS) {

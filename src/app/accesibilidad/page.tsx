@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Fragment } from "react";
+import { pageMetadata } from "@/components/sites/etiquetasdecanarias/seo";
 import { Section } from "@/components/sites/etiquetasdecanarias/ui";
 
-export const metadata: Metadata = { title: "Accesibilidad" };
+export const metadata: Metadata = pageMetadata({ title: "Accesibilidad", description: "Declaración de accesibilidad del sitio web de Canarias Línea Gráfica (etiquetasdecanarias.es).", path: "/accesibilidad/" });
 
 /** Accessibility statement, copied paragraph by paragraph from the live page. */
 const PARAGRAPHS: string[][] = [

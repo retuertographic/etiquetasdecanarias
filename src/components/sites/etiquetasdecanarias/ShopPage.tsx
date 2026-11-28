@@ -62,7 +62,7 @@ export function ShopPage({ page }: { page: number }) {
         </form>
         <div className="flex-1">
           <div className="pt-0">
-            <ProductGrid products={visible} columns={3} />
+            <ProductGrid products={visible} columns={3} priorityCount={3} />
           </div>
           {pages > 1 && (
             <nav aria-label="Paginación" className="mt-12 flex items-center justify-center gap-1">

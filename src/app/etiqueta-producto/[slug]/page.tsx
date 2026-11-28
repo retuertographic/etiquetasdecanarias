@@ -13,7 +13,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  return { title: `${slug} archivos` };
+  return { title: `${slug} archivos`, alternates: { canonical: `/etiqueta-producto/${slug}/` } };
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
@@ -26,7 +26,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <h1 className="text-[44.8px] leading-[1.2] text-[#2077a8] max-[600px]:text-[32px]">{slug}</h1>
       </Section>
       <Section className="pt-10 max-[600px]:pt-6">
-        <ProductGrid products={products} />
+        <ProductGrid products={products} priorityCount={4} />
       </Section>
     </>
   );

@@ -1,32 +1,10 @@
 import { CATEGORIES, PRODUCT_BY_SLUG, categoryHref, productHref, productsByTitle } from "@/components/sites/etiquetasdecanarias/catalog";
 import { PHONE, SITE, WHATSAPP } from "@/components/sites/etiquetasdecanarias/data";
 import { QUANTITY, SIZE_MAX, SIZE_MIN } from "@/components/sites/etiquetasdecanarias/pricing";
+import { summarize } from "@/components/sites/etiquetasdecanarias/seo";
 
 // Built once at build time from the same catalog the pages use (https://llmstxt.org).
 export const dynamic = "force-static";
-
-function plain(html: string) {
-  return html
-    .replace(/<\/h\d>/g, ". ") // headings inside descriptions end a sentence
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;/g, " ")
-    .replace(/\s+/g, " ")
-    .replace(/\s+\./g, ".")
-    .replace(/\.{2,}/g, ".")
-    .trim();
-}
-
-/** First sentence(s) of a product description, kept under ~220 characters. */
-function summary(html: string) {
-  const text = plain(html);
-  const sentences = text.match(/[^.!?…]+[.!?…]+/g) ?? [text];
-  let out = "";
-  for (const s of sentences) {
-    if (out && (out + s).length > 220) break;
-    out += s;
-  }
-  return out.trim();
-}
 
 const url = (path: string) => `${SITE}${path}`;
 const euro = (n: number) => `${n.toLocaleString("es-ES")} €`;
@@ -54,7 +32,7 @@ function build() {
   push("## Productos", "");
   for (const p of productsByTitle()) {
     const extra = p.calculator ? " Precio inmediato con calculadora." : " Presupuesto bajo petición.";
-    push(`- [${p.title}](${url(productHref(p.slug))}): ${summary(p.content)}${extra}`);
+    push(`- [${p.title}](${url(productHref(p.slug))}): ${summarize(p.content, 220)}${extra}`);
   }
   push("");
 

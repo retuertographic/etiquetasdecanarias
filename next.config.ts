@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { DEVICE_SIZES, IMAGE_SIZES } from "./image-widths.mjs";
 
 // GITHUB_PAGES=true builds a static export served from
 // https://<owner>.github.io/etiquetasdecanarias/ (see .github/workflows/pages.yml).
@@ -11,8 +12,12 @@ const nextConfig: NextConfig = {
   // WordPress URLs on the source all end with "/".
   trailingSlash: true,
   env: { NEXT_PUBLIC_BASE_PATH: basePath },
-  // Static hosting has no image optimizer: serve the files as they are, under basePath.
-  images: pages ? { loader: "custom", loaderFile: "./src/lib/image-loader.ts" } : undefined,
+  // Static hosting has no image optimizer: WebP sizes are pre-rendered at build time.
+  images: {
+    deviceSizes: DEVICE_SIZES,
+    imageSizes: IMAGE_SIZES,
+    ...(pages ? { loader: "custom" as const, loaderFile: "./src/lib/image-loader.ts" } : {}),
+  },
 };
 
 export default nextConfig;

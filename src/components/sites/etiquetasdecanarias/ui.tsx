@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import { productHref, type CatalogProduct } from "./catalog";
+import type { CatalogProduct } from "./catalog";
+import { productHref } from "./paths";
 
 /** Impreza "l-section" with the 64px/40px padding and 1260px content width. */
 export function Section({ children, className, inner }: { children: ReactNode; className?: string; inner?: string }) {
@@ -40,13 +41,13 @@ export const INPUT =
   "w-full rounded-[4px] bg-[#f2f2f2] px-6 text-base text-[#4a4a4a] shadow-[0_0_0_1px_#e3e7f0] outline-none placeholder:text-[#8a8a8a] focus:shadow-[0_0_0_2px_#49a7d1]";
 
 /** WooCommerce "shop modern" product card (white card, image, centered title). */
-export function ProductCard({ product, titleColor = "#2077a8", aspect = "3 / 4" }: { product: CatalogProduct; titleColor?: string; aspect?: string }) {
+export function ProductCard({ product, titleColor = "#2077a8", aspect = "3 / 4", priority = false }: { product: CatalogProduct; titleColor?: string; aspect?: string; priority?: boolean }) {
   const href = productHref(product.slug);
   return (
     <article className="h-full">
       <div className="flex h-full flex-col overflow-hidden rounded-[4.8px] bg-white shadow-[0_0.48px_0.96px_rgba(0,0,0,0.1),0_1.92px_5.76px_rgba(0,0,0,0.1)] transition-shadow hover:shadow-[0_2px_4px_rgba(0,0,0,0.1),0_8px_24px_rgba(0,0,0,0.15)]">
         <Link href={href} className="relative block w-full" style={{ aspectRatio: aspect }}>
-          <Image src={product.image} alt={product.imageAlt} fill sizes="(min-width: 1025px) 280px, (min-width: 601px) 45vw, 90vw" className="object-cover" />
+          <Image src={product.image} alt={product.imageAlt || product.title} fill priority={priority} sizes="(min-width: 1025px) 280px, (min-width: 601px) 45vw, 90vw" className="object-cover" />
         </Link>
         <div className="flex flex-1 items-start justify-center px-4 pt-4 pb-[19px]">
           <h2 className="text-center text-base leading-[1.2]" style={{ color: titleColor }}>
@@ -61,15 +62,16 @@ export function ProductCard({ product, titleColor = "#2077a8", aspect = "3 / 4" 
 }
 
 /** Responsive grid of product cards (Impreza grid with 24px item padding). */
-export function ProductGrid({ products, columns = 4, titleColor }: { products: CatalogProduct[]; columns?: 3 | 4; titleColor?: string }) {
+/** `priorityCount`: first cards loaded eagerly (they are the LCP on listing pages). */
+export function ProductGrid({ products, columns = 4, titleColor, priorityCount = 0 }: { products: CatalogProduct[]; columns?: 3 | 4; titleColor?: string; priorityCount?: number }) {
   return (
     <div className={cn("-m-6 flex flex-wrap max-[600px]:-m-2")}>
-      {products.map((p) => (
+      {products.map((p, i) => (
         <div
           key={p.slug}
           className={cn("p-6 max-[600px]:w-1/2 max-[600px]:p-2 min-[601px]:max-[1024px]:w-1/2", columns === 4 ? "min-[1025px]:w-1/4" : "min-[1025px]:w-1/3")}
         >
-          <ProductCard product={p} titleColor={titleColor} />
+          <ProductCard product={p} titleColor={titleColor} priority={i < priorityCount} />
         </div>
       ))}
     </div>

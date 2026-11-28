@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Section } from "@/components/sites/etiquetasdecanarias/ui";
 
-export const metadata: Metadata = { title: "Nuestros Trabajos" };
+export const metadata: Metadata = { title: "Nuestros Trabajos", alternates: { canonical: "/nuestros-trabajos/" } };
 
 /** Only the title is published on the live site. */
 export default function Page() {

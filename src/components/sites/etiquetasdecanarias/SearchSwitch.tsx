@@ -1,8 +1,10 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { useEffect, type ReactNode } from "react";
-import { SearchResults } from "./SearchResults";
+// Loaded only when searching, so the catalog stays out of the home page bundle.
+const SearchResults = dynamic(() => import("./SearchResults").then((m) => m.SearchResults));
 
 /** Shows search results when the home URL carries ?s=…, like WordPress. */
 export function SearchSwitch({ home }: { home: ReactNode }) {

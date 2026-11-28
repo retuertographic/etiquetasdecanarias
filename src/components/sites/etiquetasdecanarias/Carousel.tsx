@@ -124,7 +124,8 @@ export function Carousel({ slides, breakpoints, navStyle, className, ariaLabel, 
               key={i}
               className="shrink-0"
               style={{ width: `${pct}%`, paddingRight: gap }}
-              aria-hidden={i < index || i >= index + perView ? true : undefined}
+              // Off-screen copies stay out of the tab order and the accessibility tree.
+              inert={i < index || i >= index + perView}
             >
               {slide}
             </div>

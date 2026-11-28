@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ComponentType, SVGProps } from "react";
 import { Carousel, type CarouselBreakpoint } from "./Carousel";
-import { ALL_PRODUCTS, ASSETS, BEST_SELLERS, CLIENTS, type Product } from "./data";
+import { ALL_PRODUCTS, ASSETS, BEST_SELLERS, CLIENTS, PHONE, SITE, type Product } from "./data";
 import { HeroSlider } from "./HeroSlider";
 import { FaLightBoxOpen, FaLightMap, FaLightPrint, FaLightShippingFast } from "./icons";
 
@@ -30,7 +30,7 @@ function ProductCard({ product }: { product: Product }) {
   return (
     <article>
       <Link href={product.href} className="block" draggable={false}>
-        <Image src={product.img} alt={product.alt} width={614} height={621} sizes="(min-width: 1381px) 174px, (min-width: 1025px) 30vw, 45vw" className="h-auto w-full" draggable={false} />
+        <Image src={product.img} alt={product.alt || product.title} width={614} height={621} sizes="(min-width: 1381px) 174px, (min-width: 1025px) 30vw, 45vw" className="h-auto w-full" draggable={false} />
       </Link>
       <h2 className="mt-2 text-center text-base leading-[1.2] text-[#0c5f78]">
         <Link href={product.href} className="transition-colors hover:text-[#FF6900]" draggable={false}>
@@ -52,10 +52,28 @@ function ProductSection({ title, color, products, paddingTop }: { title: string;
   );
 }
 
+/** Business details for search engines (schema.org), taken from the site's own contents. */
+const ORGANIZATION_LD = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Canarias Línea Gráfica",
+  alternateName: "Etiquetas de Canarias",
+  description: "Fábrica de etiquetas adhesivas e imprenta en Tenerife desde 1975.",
+  url: `${SITE}/`,
+  logo: `${SITE}/sites/etiquetasdecanarias/img/logo.png`,
+  image: `${SITE}/sites/etiquetasdecanarias/banners/baner-web-desde-1975-2.jpg`,
+  telephone: `+34${PHONE}`,
+  foundingDate: "1975",
+  address: { "@type": "PostalAddress", addressRegion: "Santa Cruz de Tenerife", addressCountry: "ES" },
+  areaServed: "Islas Canarias",
+};
+
 export function HomePage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION_LD) }} />
       <div>
+        <h1 className="sr-only">Canarias Línea Gráfica: tu fábrica de etiquetas en Tenerife, para todo Canarias</h1>
         {/* Hero banners */}
         <section className="px-10 py-8 max-[1024px]:px-6 max-[1024px]:py-6">
           <div className="mx-auto max-w-[1260px]">
@@ -86,7 +104,7 @@ export function HomePage() {
             {FEATURES.map(({ Icon, title, text }) => (
               <div key={title} className="rounded-[10px] p-5 text-center leading-[1.2] text-[#4a4a4a]">
                 <Icon className="mx-auto h-[43.2px] w-auto text-[#49a7d1]" />
-                <h3 className="py-[11px] text-[22px] leading-[1.2] max-[1024px]:text-[19px]">{title}</h3>
+                <h2 className="py-[11px] text-[22px] leading-[1.2] max-[1024px]:text-[19px]">{title}</h2>
                 <p className="text-base leading-[1.2]">{text}</p>
               </div>
             ))}
@@ -128,7 +146,7 @@ export function HomePage() {
         {/* Clients */}
         <section className="px-10 pt-[72px] max-[600px]:px-4 max-[600px]:pt-10">
           <div className="mx-auto max-w-[1260px]">
-            <h4 className="text-center text-[22px] leading-[1.2] text-[#a0adb0]">Nuestros clientes</h4>
+            <h2 className="text-center text-[22px] leading-[1.2] text-[#a0adb0]">Nuestros clientes</h2>
             <Carousel
               ariaLabel="Nuestros clientes"
               navStyle="plain"

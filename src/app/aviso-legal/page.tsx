@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Section } from "@/components/sites/etiquetasdecanarias/ui";
 
-export const metadata: Metadata = { title: "Aviso Legal" };
+export const metadata: Metadata = { title: "Aviso Legal", alternates: { canonical: "/aviso-legal/" } };
 
 /** This page has no content on the live site yet; it is reproduced as-is. */
 export default function Page() {

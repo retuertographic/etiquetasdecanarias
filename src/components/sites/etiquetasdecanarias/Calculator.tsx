@@ -86,7 +86,7 @@ function NumberField({ value, onChange, label }: { value: number; onChange: (v: 
         }}
         className={cn(FIELD_BOX, INK, "h-[46px] w-full appearance-none px-[10px] text-[16px] font-bold outline-none [-moz-appearance:textfield] focus:border-[#2ab84a] [&::-webkit-inner-spin-button]:appearance-none")}
       />
-      <div className="absolute top-1/2 right-[6px] flex -translate-y-1/2 flex-col gap-[6px]">
+      <div className="absolute top-0 right-0 flex h-full flex-col">
         {[1, -1].map((d) => (
           <button
             key={d}
@@ -97,11 +97,14 @@ function NumberField({ value, onChange, label }: { value: number; onChange: (v: 
               setText(String(n));
               onChange(n);
             }}
-            className="flex h-[12px] w-[12px] items-center justify-center rounded-[2px] bg-[rgba(0,25,49,0.1)] text-[#001931]"
+            className="group/spin flex h-1/2 w-7 items-center justify-center text-[#001931]"
           >
-            <svg viewBox="0 0 10 6" className={cn("h-[5px] w-[8px]", d < 0 && "rotate-180")} aria-hidden="true">
-              <path d="M0 6h10L5 0z" fill="currentColor" />
-            </svg>
+            {/* 12px visual inside a 28×23px touch target */}
+            <span className="flex h-[12px] w-[12px] items-center justify-center rounded-[2px] bg-[rgba(0,25,49,0.1)] group-hover/spin:bg-[rgba(0,25,49,0.2)]">
+              <svg viewBox="0 0 10 6" className={cn("h-[5px] w-[8px]", d < 0 && "rotate-180")} aria-hidden="true">
+                <path d="M0 6h10L5 0z" fill="currentColor" />
+              </svg>
+            </span>
           </button>
         ))}
       </div>

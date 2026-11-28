@@ -21,7 +21,7 @@ import {
 function Logo({ className }: { className?: string }) {
   return (
     <Link href="/" aria-label="Canarias Línea Gráfica — Inicio" className={cn("block", className)}>
-      <Image src={`${ASSETS}/img/logo.png`} alt="canariaslineagrafica.es" width={1119} height={212} priority className="h-full w-auto" />
+      <Image src={`${ASSETS}/img/logo.png`} alt="canariaslineagrafica.es" width={317} height={60} priority className="h-full w-auto" />
     </Link>
   );
 }

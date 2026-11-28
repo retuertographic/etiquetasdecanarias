@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CATEGORIES, CATEGORY_BY_SLUG, PRODUCT_BY_SLUG, type CatalogProduct } from "@/components/sites/etiquetasdecanarias/catalog";
+import { pageMetadata } from "@/components/sites/etiquetasdecanarias/seo";
 import { ProductGrid, Section } from "@/components/sites/etiquetasdecanarias/ui";
 
 export const dynamicParams = false;
@@ -12,7 +13,9 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string[] }> }): Promise<Metadata> {
   const { slug } = await params;
   const category = CATEGORY_BY_SLUG.get(slug.join("/"));
-  return { title: category ? `${category.title} archivos` : undefined };
+  if (!category) return {};
+  const names = category.products.map((s) => PRODUCT_BY_SLUG.get(s)?.title).filter(Boolean).join(", ");
+  return pageMetadata({ title: `${category.title} archivos`, description: `${category.title} en Canarias Línea Gráfica, fábrica de etiquetas e imprenta en Tenerife: ${names}.`, path: `/categoria-producto/${category.slug}/` });
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string[] }> }) {
@@ -26,7 +29,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
         <h1 className="text-[44.8px] leading-[1.2] text-[#2077a8] max-[600px]:text-[32px]">{category.title}</h1>
       </Section>
       <Section className="pt-10 max-[600px]:pt-6">
-        <ProductGrid products={products} />
+        <ProductGrid products={products} priorityCount={4} />
       </Section>
     </>
   );

@@ -38,6 +38,9 @@ jobs:
         env:
           GITHUB_PAGES: "true"
 
+      - name: Generate responsive WebP images
+        run: node scripts/optimize-images.mjs out
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
